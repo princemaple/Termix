@@ -1,9 +1,10 @@
 import React, {useState} from "react";
 import {useSidebar} from "@/components/ui/sidebar";
 import {Button} from "@/components/ui/button.tsx";
-import {ChevronDown, ChevronUpIcon, Hammer} from "lucide-react";
+import {ChevronDown, ChevronUpIcon, Hammer, Sun, Moon} from "lucide-react";
 import {Tab} from "@/ui/Navigation/Tabs/Tab.tsx";
 import {useTabs} from "@/ui/Navigation/Tabs/TabContext.tsx";
+import {useTheme} from "@/components/theme-provider";
 import {
     Accordion,
     AccordionContent,
@@ -22,6 +23,7 @@ interface TopNavbarProps {
 export function TopNavbar({isTopbarOpen, setIsTopbarOpen}: TopNavbarProps): React.ReactElement {
     const {state} = useSidebar();
     const {tabs, currentTab, setCurrentTab, setSplitScreenTab, removeTab, allSplitScreenTab} = useTabs() as any;
+    const {theme, setTheme} = useTheme();
     const leftPosition = state === "collapsed" ? "26px" : "264px";
 
     const [toolsSheetOpen, setToolsSheetOpen] = useState(false);
@@ -215,6 +217,10 @@ export function TopNavbar({isTopbarOpen, setIsTopbarOpen}: TopNavbarProps): Reac
         document.cookie = `rightClickCopyPaste=${checked}; expires=2147483647; path=/`;
     }
 
+    const toggleTheme = () => {
+        setTheme(theme === "dark" ? "light" : "dark");
+    }
+
     return (
         <div>
             <div
@@ -264,6 +270,15 @@ export function TopNavbar({isTopbarOpen, setIsTopbarOpen}: TopNavbarProps): Reac
                 </div>
 
                 <div className="flex items-center justify-center gap-2 flex-1 px-2">
+                    <Button
+                        variant="outline"
+                        className="w-[30px] h-[30px]"
+                        title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+                        onClick={toggleTheme}
+                    >
+                        {theme === "dark" ? <Sun className="h-4 w-4"/> : <Moon className="h-4 w-4"/>}
+                    </Button>
+
                     <Button
                         variant="outline"
                         className="w-[30px] h-[30px]"
